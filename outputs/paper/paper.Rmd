@@ -1,107 +1,308 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Disagreement Regarding 2016 Presidential Election in the United States^[Code and data are available at: https://github.com/SANGWOONG-LEE/2016electionanalysis]"
+subtitle: "Possible factors effecting 2016 election"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Young Suk
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper has been examined possible variables that influenced U.S citizens' choice for the 2016 U.S presidential election. We have found that there exists significantly different opinions regarding gender, wealth, race and age. This is important in a sesne that it shows thought trends as well as crucial decision indicators for voting in U.S.,With further survey at the end of this paper, we are going to explore whether this is happening only in U.S or not."
 output:
-  bookdown::pdf_document2
+  bookdown::pdf_document2:
+    fig_caption: yes
 toc: FALSE
 bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library(tidyverse)
-library(palmerpenguins)
+library(dplyr)
+library(knitr)
 ```
 
 # Introduction
+Environmental issues around the world as been very important part of modern society as many changes in the environment such as climate change, water and air pollution started to be very noticeable. While the concerns regarding the state of the environment has become popular issue, it is still is not
 
-You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
+Donald Trump won the 2016 United States presidential election. From what we remembered, it was quite surprising considering his image outside of U.S or even in U.S. Also, before the election, Hillary Clinton was ahead in most surveys as well. There is a famous quote that we learn from the past. We thought that even though we are living in 2022, it would be meaningful to analyze the election so that we get to know what U.S citizens thought, or in broader sense, thoughts trends in nowadays and what factors we considered most important to decide our representative.
+
+This paper is mainly going to explore possible variables that potentially had impacts on decision regarding the election as well as their analysis. However, making a choice for  which variables affected U.S citizens to lean on Trump side or Clinton side was not easy because there is nothing in this world absolute. Thus, as we mentioned above, we are going to focus on general flows of results instead of defining variables as absolute factors of the demarcation. Following that, this paper has structures: Data, Results, Discussion, Appendix and supplementary survey. 
+
+The dataset was obtained from U.S GSS, and only picked and used the variables that are very related to the subject of this study. Throughout the analysis of relation between the variables and respondents' votes on the election, we could observe that people who had conservative thoughts on equality and welfare preferred Trump, and people who did not preferred Clinton. This may sound obvious considering their parties. In the result session, reader can observe that what specific areas or fields the respondents considered important. We believe that this situation is not only happening in U.S, but it is also happening all over the world. This claim is going to be conducted with supplementary survey session. 
 
 
+This report was created using `R` [@citeR] and its libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], were used to process and clean the data, and `ggplot` [@ggplot] `bookdown` [@bookdown] and `knitr` [@knitr] was used to format this report.
 
 # Data
-
-Our data is of penguins (Figure \@ref(fig:bills)).
-
-```{r bills, fig.cap="Bills of penguins", echo = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+```{r, include=FALSE, echo=FALSE}
+# Read the reduced and cleaned data, modification done in data-preparation.r file
+reduced_data <- read_csv("outputs/data/prepared_gss.csv")
+reduced_data$pres16 <- factor(reduced_data$pres16, levels = c("Clinton","Trump","Other","Did not vote"))
+# Change the order of variables for graphing purposes
+reduced_data$Family_income <- factor(reduced_data$Family_income, 
+                                     levels = c("Under $10,000","$10,000 ~ $19,999","$20,000 ~ $39,999","$40,000 ~ $59,999", 
+                                                "$60,000 ~ $89,999","$90,000 ~ $129,999","$130,000 ~ $169,999","$170,000 or over"))
+reduced_data$Immigration <- factor(reduced_data$Immigration, levels = c("Strongly disagree","Disagree", "Neither","Agree","Strongly agree"))
 ```
 
-Talk more about it.
+The Original data is from survey by US GSS, which contains data of public opinions of USA citizens on various subjects. The data is from 2021 survey which was conducted online due to global pandemic by COVID19. The survey included a section asking people's opinion on various subjects regarding environment. To study the opinions of different groups of people about different aspects of environmental issues, the following variables from the survey has been chosen: age, gender, race, 
 
-Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can change the height and width so they don't take the whole page?)
+One important thing that can be observed from the data, which is also important aspect of this research is is that there are many people who did not answer the questions regarding the environmental issues. This show that level of interest people show regarding this topic. Some people 
 
-```{r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
+There exists a survey similar to ours, CNN exit polls, however it is not easy to obtain the datasets they used. Also, US GSS is more realistic than exit polls since people would think more rational with sufficient time to think in US GSS than exit polls. Ext polls can show crucial factors, but it lackes the ability of general thoughts. 
 
-# This needs to be about the random data tha tI sasmpled?
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+Now, let's get into the variables in details. One thing that we focused at first was whether respondents were equivalently recruited or not. To do this, you have to look at respondents' personal information. If you take a look from figure \@ref(fig:fig1) to \@ref(fig:fig4). You can see some interesting observations as followed:
+
+1) Number of survey participants of age in the range of 20~40 is unexpectedly low compared to other ages.
+
+2) There are significantly more white population compared other races. However, considering US race demographics, it is very reasonable. 
+For more details on US race demographics, please visit the link: https://www.census.gov/quickfacts/fact/table/US/PST045221.
+
+3) For gender, there is slightly more female than male, and we will see later whether this has impacts on vote or not. 
+
+From figure \@ref(fig:fig5) to \@ref(fig:fig14), they represent respondents' thoughts on national policies as well as relation between variables. Mostly they were collected from questions that whether you think that national spending on corresponding variables is about right, too much, or too little. For instance, let's take a look at figure \@ref(fig:fig5). This graph represents respondents' thoughts on U.S national spending on improving black condition, and we sorted it with our interest, Clinton or Trump. For more example, let's take a look at figure \@ref(fig:fig9).This graph represents relation between income and degree with respect to our interest. It generally shows that higher education you have, more income you earn. We are going to talk about interesting results in more detailed later in result and discussion session. For more information regarding variables graph please check Appendix.
+
+```{r fig1,echo=FALSE, fig.cap = "Distribution of survey respondents' age group."}
+reduced_data %>%
+  drop_na(age_group) %>%
+  ggplot(aes(x = age_group, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar() +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Survey Respondents' Age") +
+  theme(legend.title = element_blank())
 ```
 
-Talk way more about it. 
+```{r fig2, fig.cap= "Distribution of survey respondents' race.", echo = FALSE}
+reduced_data %>%
+  ggplot(aes(x = race, fill = race)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Survey Respondents' Race",
+       ) +
+  theme(legend.position = "none")
+```
 
+```{r fig3, echo = FALSE, fig.cap= "Distribution of survey respondents' gender"}
+reduced_data %>%
+  ggplot(aes(x = gender, fill = gender)) +
+  geom_bar() +
+  #scale_fill_manual("gender", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Survey Respondents' Gender",
+       ) +
+  theme(legend.position = "none")
+```
 
+```{r fig4, echo=FALSE, fig.cap = "Distribution of survey respondents"}
+reduced_data %>%
+  ggplot(aes(x = pres16, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar() +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Surveyee's Vote Choice of 2016 Presidential Election",
+       ) +
+  theme(legend.position = "none")
+```
 
-# Model
+```{r fig5, echo=FALSE, fig.cap = "Opinion on national spending on improving conditions of black population"}
+reduced_data %>%
+  drop_na(nation_race) %>%
+  drop_na(race) %>%
+  ggplot(aes(x = race, fill = nation_race)) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the US Spending Enough to Improve Conditions of Black Population?",
+       ) +
+  facet_wrap(~ pres16) + 
+  theme(legend.title = element_blank())
+```
 
-\begin{equation}
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation}
+```{r fig6, echo=FALSE,fig.cap = "Distribution of survey respondents' vote choice by birth place"}
+reduced_data %>%
+  ggplot(aes(x = born_US, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar() +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Surveyee's Vote Choice of 2016 Presidential Election by Brith Place",
+       fil = "Candidate")
+```  
 
-Equation \@ref(eq:bayes) seems useful, eh?
+```{r fig7, echo=FALSE, fig.cap = "Distribution of survey respondents' vote by gender"}
+reduced_data %>%
+  ggplot(aes(x = pres16, fill = gender)) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Surveyee's Vote Choice of 2016 Presidential Election by Gender"
+       )
+```
 
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
+```{r fig8, echo=FALSE, fig.cap = "Opinion on national spending on welfare"}
+reduced_data %>%
+  drop_na(nation_welfare) %>%
+  drop_na(race) %>%
+  ggplot(aes(x = race, fill = nation_welfare)) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough on Welfare?",
+       ) +
+  facet_wrap(~ pres16) + 
+  theme(legend.title = element_blank())
+```
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+```{r fig9, echo=FALSE, fig.cap = "Distribution of votes by degree and family income"}
+reduced_data %>%
+  drop_na(degree) %>%
+  ggplot(aes(x = degree, fill = factor(Family_income, 
+                                       levels = c("$170,000 or over","$130,000 ~ $169,999","$90,000 ~ $129,999","$60,000 ~ $89,999",
+                                                  "$40,000 ~ $59,999","$20,000 ~ $39,999","$10,000 ~ $19,999","Under $10,000")))) +
+  geom_bar(position = "dodge") +
+  labs(fill = "Family Income") +
+  coord_flip() +
+  facet_wrap(~pres16) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Education, Income and its Effect to the Vote"
+       )
+```
 
+```{r fig10, echo=FALSE, fig.cap = "Opinion on wheter the US should limit immigration to protect their culture"}
+reduced_data %>%
+  ggplot(aes(x = Immigration, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar() +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(fil = "Candidate") +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Should the Government Limit Immigration?"
+       ) +
+  facet_wrap(~pres16)
+```
+
+```{r fig11, echo=FALSE, fig.cap = "Surveyee's opinion on government's budget on education improvement"}
+reduced_data %>%
+  ggplot(aes(x = nation_education, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar(position = "dodge") +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(fil = "Candidate") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough on Improving Education?"
+       )
+```
+
+```{r fig12, echo=FALSE, fig.cap = "Surveyee's opinion on government's budget on arms"}
+reduced_data %>%
+  ggplot(aes(x = nation_arms, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar(position = "dodge") +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(fil = "Candidate") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough on Arms and National Defense?"
+       )
+```
+
+```{r fig13, echo=FALSE, fig.cap= "Surveyee's opinion on government's budget on assisting the poor"}
+reduced_data %>%
+  ggplot(aes(x = Assistance_to_the_poor, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar(position = "dodge") +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(fil = "Candidate") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Assist the Poor?"
+       )
+```
+
+```{r fig14, echo=FALSE, fig.cap = "Surveyee's opinion on government's budget on assisting other countries"}
+reduced_data %>%
+  ggplot(aes(x = Assistance_to_other_countries, fill = factor(pres16, levels = c("Clinton", "Trump", "Other", "Did not vote")))) +
+  geom_bar(position = "dodge") +
+  scale_fill_manual("Candidate", values = c("Clinton" = "#01378C", "Trump" = "#ff3d3d", "Other" = "#2cd18c", "Did not vote" = "#dede1b")) +
+  labs(fil = "Candidate") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Assis Other Countries?"
+       )
+```
+
+\newpage
 
 # Results
+The questions asking personal information shows some obvious but also interesting results. Figure \@ref(fig:fig1) shows that younger generation did not participate in the survey as much as older generation. It can also be seen that while almost all age groups preferred Clinton over Trump, compared to younger generation, older age groups show more interest to Trump. Females participants outnumbers male participants by significant amount as seen on Figure \@ref(fig:fig3), and many of female participants' vote went to Clinton, while male votes divided almost evenly(Figure \@ref(fig:fig6)). Figure \@ref(fig:fig8) shows some very interesting responses. Considering the distribution of votes, votes of white population are fairly split between Clinton and Trump, with more votes to Clinton, but all other races heavily favor Clinton. Some aspects that are not so obvious are ones involving education, family income and its correlation with the candidate preference. AS seen on figure \@ref(fig:fig9), People with higher education and higher income voted for Clinton while lower income and education votes are quite evenly split.
+
+Figures 9-14 focuses on the questions that involves asking their opinions of various subjects of government policies and how supporters of different candidate, figure \@ref(fig:fig8) shows that white population's general opinion is that the government's budget on welfare is not lacking, with many of them thinking government is spending too much, whereas other races opinions are evenly split with black community leaning more towards the opinion that it is lacking. We can also observe from the same figure that Clinton supporters generally think that the budget on welfare is lacking, and Trump's supporters think budget is too much. Figure \@ref(fig:fig10) shows answers to question on immigration and whether the government should limit immigration to protect American culture, and it shows that out of the people who answered the question, majority of Clinton voters disagrees and majority of Trump voters agrees. We start to see a trend here that Trump supporters have more conservative opinions and Clinton supporters are more open to ideas on improvement in social equality or welfare. We see this trend continue on with other figures. On Figure \@ref(fig:fig12), many Clinton voters think government is spending too much of national defense while very few Trump voters think the same, while many trump voters think they spend too little when very few Clinton voters have the same opinion. For the question on if they think the government is spending enough to assist other countries (Figure \@ref(fig:fig14)), while Clinton's supporters opinions are divided quite evenly between "about right", and "too much", majority of Trump supporters think that the government is spending too much. Figure \@ref(fig:fig11) and Figure \@ref(fig:fig13) shows where Clinton voters and Trump voters share the same opinion on government spending on education and to assist the poor. While majority of people who thinks that the government is spending too much on both occasions are Trump supporters, popular opinions from both parties is that the government is spending too little on education and to assist the poor. 
+
 
 # Discussion
+In this session, we are going to explore important questions that can be raised from our findings. At this point, you may end up with question marks in meanings this paper possess. Although this paper is a research of the past, this definitely has something to tell us about the U.S or even the world. 
+Hopefully following questions helps you to understand our paper.
 
-## First discussion point
+## Summary
+We have taken survey data to observe the trend in voters of 2016 presidential election of the United States. In general, just as we expected by the trend we saw during our observation of the data, Hillary Clinton supporters were moved by improvement in social equality or welfare such as "Assistance to the Poor", "nation welfare", "nation education" and "Assistance to the other countries". On the other hand, Donald Trump supporters were interested by more conservative ideas that US is spending too much on the sessions above, and shows their support to Trump's slogan "Make America Great Again".
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+## Disagreement Between Races, Gender, Ages, and Wealth
+Even though the United States and many other countries around the world have been trying hard to improve social welfare and equality, throughout this paper we have observed that there still exists disagreement within gender, race, wealth and age, and this had massive impact on politics and was crucial factor on people's decision on who to vote for as the president. Despite the popular movements voicing for equality between genders, and races and such in recent years, it seems that the opinions of people in different groups, are very divided. 
 
-## Second discussion point
+## Weaknesses and how we should proceed in the future
+The data from U.S GSS contained large amount of data and information and the distribution of survey respondents were quite accurate in terms of race. However, there were significantly more females than males and significantly less people of ages in the 20s, 30s and 40s. It is important, especially for the topic of this paper, to have the data on the younger generation and how they view government policies and how it effects their vote for the presidential election.
+To gain more knowledge in this trend of disagreement between people of different race, gender, age and wealth when it comes to the election, an additional survey could be made to answer WHY this disagreement is happening, by not just asking for their opinion but also asking about what they experience and witness. In the future, survey should be including questions that can allow us to better capture and understand the current trend in agreement and disagreement between different groups of people, it can allow us to study how it could effect the election in the future.
 
-## Third discussion point
 
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
 
 \newpage
 
 \appendix
 
 # Appendix {-}
+1) Figure \@ref(fig:fig6) represents people who were born in US and their votes on the candidates. Most respondents were born in US.
+
+2) Figure \@ref(fig:fig8) represents national spending on welfare. People who advocated more funds in improvement of welfare shows preference in Clinton and people who did not shows preference in Trump. 
+
+3) Figure \@ref(fig:fig10) represents whether U.S should limit immigration in order to protect their own cultures or not. Even though many answered "Not Applicable", we can observe two different patters in Clinton and Trump. 
+
+4) Figure \@ref(fig:fig11) represents  national spending on education with votes. People who want more funds in education improvement shows preference in Clinton and vice versa.
+
+5) Figure \@ref(fig:fig12) represents national spending on the arms with respect to votes for the candidates. People who thought too much clealry shows the preference toward Clinton.
+
+6) Figure \@ref(fig:fig13) represents national spending on the poor with respect to respondents' votes on the candidates. From "About right" to "Too much", there exits more Trump supporters than Clinton's and vice versa.
+
+7) Figure \@ref(fig:fig14) represents national spending on aids to foreign countries with respect to the votes for candidates . There exists more Trump supporters in "Too much" comparing to Clinton's supporters.
+
+# Supplementary survey
+
+Our supplementary survey is available here: https://docs.google.com/forms/d/e/1FAIpQLScN9ySPIn2W2DZ-Cs5GBpgXRcw79l1oNkqym3ARWWzIy-8uOg/viewform?usp=sf_link
+
+## Preamble and Questions preview
+
+The purpose of this survey is to further investigate the 2016 U.S presidential election. We are interested in more and specific opinions regarding factors you consider important to decide who to vote than what US GSS provided. If you are not a US citizen, please pretend you are, or imagine that having very similar candidates in your home country. 
+
+By proceeding with this survey, you understand that we will use your responses to 
+better understand the 2016 U.S presidential election in the GSS. The survey is voluntary, and if you decide to participate you can skip questions and withdraw at any time.
 
 
-# Additional details
+## End Page
 
+Thank you for participating in our survey. If you have any questions please do not hesitate to contact us.
+sangwoong.lee@maill.utoronto.ca and young.suk@mail.utoronto.ca
 
 \newpage
 
 
 # References
+Smith, Tom W., Davern, Michael, Freese, Jeremy, and Morgan, Stephen L., General Social Surveys, 1972-2018 [machine-readable data file] /Principal Investigator, Smith, Tom W.; Co-Principal Investigators, Michael Davern, Jeremy Freese and Stephen L. Morgan; Sponsored by National Science Foundation. --NORC ed.-- Chicago: NORC, 2019.
 
-
+U.S. Census Bureau (2021). Population estimates. Retrieved from https://www.census.gov/quickfacts/fact/table/US/PST045221.
