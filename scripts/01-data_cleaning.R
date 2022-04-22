@@ -24,7 +24,6 @@ reduced_data <-
   select(age,
          sexnow1, 
          degree,
-         degree,
          income16,
          raceacs1,
          raceacs2,
@@ -38,23 +37,27 @@ reduced_data <-
          raceacs10,
          raceacs15,
          raceacs16,
-         nateduc,
-         grncon,
-         enprbus,
-         clmtcaus,
-         clmtwrld,
-         scigrn,
-         grnecon,
-         grnprog,
-         grntaxes,
-         naturdev
+         natrace,
+         natfare,
+         natfarey,
+         natsoc,
+         natcrime,
+         immlimit,
+         relig,
+         religinf,
+         opsex,
          
   ) %>% 
   rename(gender = sexnow1,
          Family_income = income16,
-         nation_education = nateduc)
+         nation_race = natrace,
+         nation_welfare = natfare,
+         Assistance_to_the_poor = natfarey,
+         social_security = natsoc,
+         Immigration = immlimit,
+         )
 
-#rm(raw_data)
+# rm(raw_data)
 
 # Add age_group column based on age column
 reduced_data <- reduced_data %>% 
@@ -69,7 +72,17 @@ reduced_data <- reduced_data %>%
     age_group == "(79,89]" ~ "80-89 years old"
   ))
 
-
+# # Recode to rename variables in imigration according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
+# The question was America should limit immigration in order to protect our national way of life
+reduced_data <- 
+  reduced_data %>% 
+  mutate(Immigration = case_when(
+    Immigration == 1 ~ "Strongly agree",
+    Immigration == 2 ~ "Agree",
+    Immigration == 3 ~ "Neither",
+    Immigration == 4 ~ "Disagree",
+    Immigration == 5 ~ "Strongly disagree"
+  ))
 # Recode to rename variables in gender according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
 # The question was Do you describe yourself as male, female, or transgender?
 reduced_data <- 
@@ -80,6 +93,7 @@ reduced_data <-
     gender == 3 ~ "Transgender",
     gender == 4 ~ "Other",
   ))
+
 
 # Recode to rename variables in degree according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
 # The question was the respondent's degree.
@@ -92,6 +106,7 @@ reduced_data <-
     degree == 3 ~ "Bachelors",
     degree == 4 ~ "Graduate"
   ))
+
 # Recode to rename variables in Family_income according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
 # The question was in which of these groups did your total family income from all souces, fall last year?
 # Before taxes.For simplicity, I divided groups into 
@@ -136,17 +151,37 @@ reduced_data <-
     Family_income == 27 ~ "Refused"
   ))
 
-# Recode to rename variables in nation_education according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
+
+# Recode to rename variables in nation_race according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
 # The question was whether US is spending too much, too little, or about the right amount on 
-# improving the nation's education system.
-# One thing to notice here is that there exists 50.7% of respondents who answered "Not Applicable".
+# improving the conditions of Blacks
+# Similar to nation education, this has 50.7% of respondents who answered "Not Applicable".
 # Unfortunately this falls into "NA". 
 reduced_data <- 
   reduced_data %>% 
-  mutate(nation_education = case_when(
-    nation_education == 1 ~ "Too little",
-    nation_education == 2 ~ "About right",
-    nation_education == 3 ~ "Too much",
+  mutate(nation_race = case_when(
+    nation_race == 1 ~ "Too little",
+    nation_race == 2 ~ "About right",
+    nation_race == 3 ~ "Too much",
+  ))
+
+# change the name of values for religion variable as specified in th GSS codebook.
+reduced_data <- 
+  reduced_data %>% 
+  mutate(relig = case_when(
+    relig == 1 ~ "Christian",
+    relig == 2 ~ "Catholic",
+    relig == 3 ~ "Jewish",
+    relig == 4 ~ "None",
+    relig == 5 ~ "Other",
+    relig == 6 ~ "Buddhism",
+    relig == 7 ~ "Hinduism",
+    relig == 8 ~ "Other",
+    relig == 9 ~ "Muslim/Islam",
+    relig == 10 ~ "Other",
+    relig == 11 ~ "Christian",
+    relig == 12 ~ "Native American",
+    relig == 13 ~ "Other",
   ))
 
 # First step of merging process of survey response related to race. Create a column race_sum which each row represents number of races of each person.
@@ -182,6 +217,78 @@ reduced_data <- reduced_data %>%
 
 
 
+# Recode to rename variables in nation_welfare according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
+# The question was whether US is spending too much, too little, or about the right amount on 
+# Welfare
+# Unfortunetly 50.7% of respondents answered "Not Applicable" which falls into "NA".
+reduced_data <- 
+  reduced_data %>% 
+  mutate(nation_welfare = case_when(
+    nation_welfare == 1 ~ "Too little",
+    nation_welfare == 2 ~ "About right",
+    nation_welfare == 3 ~ "Too much",
+  ))
+
+# Recode to rename variables in Assistance_to_the_poor according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
+# The question was whether US is spending too much, too little, or about the right amount on 
+# assistance to the poor
+# Unfortunetly 49.3% of respondents answered "Not Applicable" which falls into "NA".
+
+reduced_data <- 
+  reduced_data %>% 
+  mutate(Assistance_to_the_poor = case_when(
+    Assistance_to_the_poor == 1 ~ "Too little",
+    Assistance_to_the_poor == 2 ~ "About right",
+    Assistance_to_the_poor == 3 ~ "Too much",
+  ))
+
+
+# Recode to rename variables in social_security according to options from the Codebook 'GSS 2021 Codebook R1b.pdf'.
+# The question was whether US is spending too much, too little, or about the right amount on 
+# social security
+reduced_data <- 
+  reduced_data %>% 
+  mutate(social_security = case_when(
+    social_security == 1 ~ "Too little",
+    social_security == 2 ~ "About right",
+    social_security == 3 ~ "Too much",
+  ))
+
+# Rename values of variable natcrime using codebook 'GSS 2021 Codebook R1b.pdf'.
+# is the government spending enough to halt rising crime rate?
+reduced_data <- 
+  reduced_data %>% 
+  mutate(natcrime = case_when(
+    natcrime == 1 ~ "Too little",
+    natcrime == 2 ~ "About right",
+    natcrime == 3 ~ "Too much",
+  ))
+
+# Rename values of variable natcrime using codebook 'GSS 2021 Codebook R1b.pdf'.
+# The U.S would be better country if religion had less influence
+reduced_data <- 
+  reduced_data %>% 
+  mutate(religinf = case_when(
+    religinf == 1 ~ "Strongly agree",
+    religinf == 2 ~ "Agree",
+    religinf == 3 ~ "Neither",
+    religinf == 4 ~ "Disagree",
+    religinf == 5 ~ "Strongly disagree"
+  ))
+
+# Rename values of variable natcrime using codebook 'GSS 2021 Codebook R1b.pdf'.
+# how important is being born as a man or woman?
+reduced_data <- 
+  reduced_data %>% 
+  mutate(opsex = case_when(
+    opsex == 1 ~ "Essential",
+    opsex == 2 ~ "Very important",
+    opsex == 3 ~ "Fairly important",
+    opsex == 4 ~ "Not very important",
+    opsex == 5 ~ "Not important at all"
+  ))
+
 
 #### Save ####
 write_csv(reduced_data, "outputs/data/prepared_gss.csv")
+
