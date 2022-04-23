@@ -87,7 +87,9 @@ reduced_data %>%
        y = element_blank(),
        title = "Survey Respondents' Gender",
        ) +
-  theme(legend.position = "none")
+  theme(legend.title = element_blank()) +
+  coord_flip() +
+  facet_wrap(~opsex)
 ```
 
 ```{r fig4, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
@@ -145,11 +147,73 @@ reduced_data %>%
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government spending enough on coditions of Black People?",
+       title = "Is the Government Spending Enough to Asssist the Poor?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+```{r fig9, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(social_security) %>%
+  ggplot(aes(x = relig, fill = social_security)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Asssist the Poor?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+```{r fig10, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(natcrime) %>%
+  ggplot(aes(x = relig, fill = natcrime)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Asssist the Poor?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+```{r fig11, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(Immigration) %>%
+  ggplot(aes(x = relig, fill = Immigration)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Asssist the Poor?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+
+```{r fig12, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(religinf) %>%
+  ggplot(aes(x = relig, fill = religinf)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Asssist the Poor?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+```{r fig13, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(opsex) %>%
+  ggplot(aes(x = relig, fill = opsex)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Asssist the Poor?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+
 
 \newpage
 
