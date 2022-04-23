@@ -213,7 +213,7 @@ reduced_data <- reduced_data %>%
 
 # Remove columns that are no longer needed.
 reduced_data <- reduced_data %>%
-  select(-c(raceacs1, raceacs2, raceacs3, raceacs4, raceacs5, raceacs6, raceacs7, raceacs8, raceacs9, raceacs10, raceacs15, raceacs16, race_sum))
+  select(-c(age, raceacs1, raceacs2, raceacs3, raceacs4, raceacs5, raceacs6, raceacs7, raceacs8, raceacs9, raceacs10, raceacs15, raceacs16, race_sum))
 
 
 

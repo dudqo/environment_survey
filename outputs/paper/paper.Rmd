@@ -1,5 +1,5 @@
 ---
-title: "Disagreement Regarding 2016 Presidential Election in the United States^[Code and data are available at: https://github.com/SANGWOONG-LEE/2016electionanalysis]"
+title: "Religion and Its Influence on Social Issues^[Code and data are available at: https://github.com/dudqo/religion_survey]"
 subtitle: "Possible factors effecting 2016 election"
 author: 
   - Young Suk
@@ -44,9 +44,15 @@ reduced_data$Family_income <- factor(reduced_data$Family_income,
 reduced_data$Immigration <- factor(reduced_data$Immigration, levels = c("Strongly disagree","Disagree", "Neither","Agree","Strongly agree"))
 ```
 
-The Original data is from survey by US GSS, which contains data of public opinions of USA citizens on various subjects. The data is from 2021 survey which was conducted online due to global pandemic by COVID19. For the purpose of this research, the data related to personal profiles, survey respondants' opinion on government policies and religion has been extracted from the raw survey data.
+The Original data is from survey by US GSS, which contains data of public opinions of USA citizens on various subjects. The data is from 2021 survey which was conducted online due to global pandemic by COVID19. For the purpose of this research, the data related to personal profiles, survey respondents' opinion on government policies and religion has been extracted from the raw survey data.
 
-The religion data has very detailed options that includes religions have very low For the simplicity of this research, protestants and christians were grouped together under chrinstans and all the non-popular religion has been grouped under "other".
+The religion data has very detailed options that includes religions have very low For the simplicity of this research, protestants and Christians were grouped together under Christians and all the non-popular religion has been grouped under "other".
+
+Looking at the figures, some expected trends from the data can be observed:
+
+* As age gets younger, the percentage of people who does not have any religion increases. With steady increase in nonreligious as age group gets younger, people in the age group of 80-89 have very few people who are not religious. If we look at 20-29 years old, we can see that about half of them does not have any religion.
+* There are far more white population who participated in the survey than any other race. This is as expected since white population in the United States far outnumbers any other race.
+* Christian is most popular religion in the United States.
 
 
 
@@ -86,7 +92,7 @@ reduced_data %>%
 
 ```{r fig4, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
-  ggplot(aes(x = relig, fill = relig)) +
+  ggplot(aes(x = relig, fill = Family_income)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
@@ -95,8 +101,55 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+```{r fig5, echo=FALSE, fig.cap = "Distribution of religion of survey respondents by family income"}
+reduced_data %>%
+  ggplot(aes(x = relig, fill = relig)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Survey Respondents' Family Income by Religion",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
 
+```{r fig6, echo=FALSE, fig.cap = "Survey respondents' opinion on governmemt policy on improving coditions of black population"}
+reduced_data %>%
+  drop_na(nation_race) %>%
+  ggplot(aes(x = relig, fill = nation_race)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government spending enough on improving coditions of Black People?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+```{r fig7, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(nation_welfare) %>%
+  ggplot(aes(x = relig, fill = nation_welfare)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government spending enough on coditions of Black People?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
 
+```{r fig8, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(Assistance_to_the_poor) %>%
+  ggplot(aes(x = relig, fill = Assistance_to_the_poor)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government spending enough on coditions of Black People?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
 
 \newpage
 
