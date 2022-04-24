@@ -21,14 +21,11 @@ library(knitr)
 ```
 
 # Introduction
-Religion has been major part of human history around the world, and for many countries, religion is something they heavily rely on even in modern days.For example, European countries such as Spain and Italy which heavily relies on catholic, and there are many middle eastern countries that heavily rely on muslim, islam and hinduism. While it is reported that the number of religious people is declining quickly, religion still has big social influence in many aspects of the society in the United States, and this paper aims to research the social influence of popular religions in the United States and how the opinions of different religions differ in the context of social issues and government policies regarding them.
+Religion has been major part of human history around the world, and for many countries, religion is something they heavily rely on even in modern days.For example, European countries such as Spain and Italy which heavily relies on catholic, and there are many middle eastern countries that heavily rely on Islam and Hinduism. While it is reported that the number of religious people is declining quickly, religion still has big social influence in many aspects of the society in the United States, and this paper aims to research the social influence of popular religions in the United States and how the opinions of different religions differ in the context of social issues and government policies regarding them.
 
 This research will focus on some social issues in the United States and how opinions of people of different religion differs.
 
-
-This paper is mainly going to explore possible variables that potentially had impacts on decision regarding the election as well as their analysis. However, making a choice for  which variables affected U.S citizens to lean on Trump side or Clinton side was not easy because there is nothing in this world absolute. Thus, as we mentioned above, we are going to focus on general flows of results instead of defining variables as absolute factors of the demarcation. Following that, this paper has structures: Data, Results, Discussion, Appendix and supplementary survey. 
-
-The dataset was obtained from U.S GSS, and only picked and used the variables that are very related to the subject of this study. Throughout the analysis of relation between the variables and respondents' votes on the election, we could observe that people who had conservative thoughts on equality and welfare preferred Trump, and people who did not preferred Clinton. This may sound obvious considering their parties. In the result session, reader can observe that what specific areas or fields the respondents considered important. We believe that this situation is not only happening in U.S, but it is also happening all over the world. This claim is going to be conducted with supplementary survey session. 
+The dataset was obtained from U.S GSS survey, by only selecting the survey questions that are related to the topic of this research. The data used includes personal profile data of survey respondents such as age, gender, religion, race, income and data on questions regarding their opinion on popular social issues in the United States such as abortion, gay marriage and government policies regarding welfare, racism, and etc. This research found that despite the people's different views on different religion and the differences in the religions themselves, when it comes to the popular social issues, their opinions are mostly inline with each other. Some different views do exists and which will be discussed in the later part of the paper. 
 
 
 This report was created using `R` [@citeR] and its libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], were used to process and clean the data, and `ggplot` [@ggplot] `bookdown` [@bookdown] and `knitr` [@knitr] was used to format this report.
@@ -85,14 +82,26 @@ reduced_data %>%
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Survey Respondents' Gender",
+       title = "Gender and Opinion on Importance of Being Born as Male or Female",
        ) +
   theme(legend.title = element_blank()) +
   coord_flip() +
   facet_wrap(~opsex)
 ```
-
 ```{r fig4, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  ggplot(aes(x = relig, fill = born)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Number of Survey Respondents' Born in U.S",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+
+
+```{r fig5, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
   ggplot(aes(x = relig, fill = Family_income)) +
   geom_bar() +
@@ -103,7 +112,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig5, echo=FALSE, fig.cap = "Distribution of religion of survey respondents by family income"}
+```{r fig6, echo=FALSE, fig.cap = "Distribution of religion of survey respondents by family income"}
 reduced_data %>%
   ggplot(aes(x = relig, fill = relig)) +
   geom_bar() +
@@ -115,7 +124,7 @@ reduced_data %>%
   theme(legend.title = element_blank())
 ```
 
-```{r fig6, echo=FALSE, fig.cap = "Survey respondents' opinion on governmemt policy on improving coditions of black population"}
+```{r fig7, echo=FALSE, fig.cap = "Survey respondents' opinion on governmemt policy on improving coditions of black population"}
 reduced_data %>%
   drop_na(nation_race) %>%
   ggplot(aes(x = relig, fill = nation_race)) +
@@ -127,20 +136,20 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig7, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig8, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
   drop_na(nation_welfare) %>%
   ggplot(aes(x = relig, fill = nation_welfare)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government spending enough on coditions of Black People?",
+       title = "Is the Government Spending Enough on Welfare?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
 
-```{r fig8, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig9, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
   drop_na(Assistance_to_the_poor) %>%
   ggplot(aes(x = relig, fill = Assistance_to_the_poor)) +
@@ -152,94 +161,107 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig9, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig10, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
   drop_na(social_security) %>%
   ggplot(aes(x = relig, fill = social_security)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government Spending Enough to Asssist the Poor?",
-       ) +
-  coord_flip() +
-  theme(legend.title = element_blank())
-```
-```{r fig10, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
-reduced_data %>%
-  drop_na(natcrime) %>%
-  ggplot(aes(x = relig, fill = natcrime)) +
-  geom_bar() +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Is the Government Spending Enough to Asssist the Poor?",
+       title = "Is the Government Spending Enough on Social Security?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
 ```{r fig11, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
+  drop_na(natcrime) %>%
+  ggplot(aes(x = relig, fill = natcrime)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Is the Government Spending Enough to Halt Increasing Crime Rate?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
+```{r fig12, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
   drop_na(Immigration) %>%
   ggplot(aes(x = relig, fill = Immigration)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government Spending Enough to Asssist the Poor?",
+       title = "Should the Government Limit Immigration to Protect U.S Culture?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
 
-```{r fig12, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig13, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
   drop_na(religinf) %>%
   ggplot(aes(x = relig, fill = religinf)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government Spending Enough to Asssist the Poor?",
+       title = "Would the U.S be a better country if religion had less influence?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig13, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig14, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
 reduced_data %>%
-  drop_na(opsex) %>%
-  ggplot(aes(x = relig, fill = opsex)) +
+  drop_na(homo_marriage) %>%
+  ggplot(aes(x = relig, fill = homo_marriage)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government Spending Enough to Asssist the Poor?",
+       title = "Do You Agree With Same Sex Marriage?",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-
+```{r fig15, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+reduced_data %>%
+  drop_na(abortion) %>%
+  ggplot(aes(x = relig, fill = abortion)) +
+  geom_bar() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "Do you agree with abortion for any reason?",
+       ) +
+  coord_flip() +
+  theme(legend.title = element_blank())
+```
 
 \newpage
 
 # Results
+To study more on gender and the opinions on importance of being born as certain gender, linear model was created to study this matter. 
 
+As for the opinions on abortion, we can see an interesting result where only Christians and Catholics show significant amount of negativity towards abortion compared to other religions. 
 
 # Discussion
 
 ## Summary
+In american society, general public's opinions on different religion varies significantly. While religions such as Christianity and Catholicism has been around since the beginning of history of the United States as a country, there are some religions such as Islam and Buddhism that Americans still are not very familiar with. With the unfamiliarity and some negative news involving a religion, the views on a specific religion be heavily influenced by stereotypes. We can observe from the u.S GSS survey that the opinions between people of different religion are not that different. 
 
 
 ## Different Opinions between different religions.
+ 
+
 
 ## Weaknesses and how we should proceed in the future
-
+As the survey was conducted in the United States, the data lacks diversity of religions and most of survey respondents' are Christians or Catholics. For more accurate and in depth research, more data from people of other religions are required. Also, the opinions regarding social issues could be influenced by the location they live. So data from different countries where Christianity or Catholicism is not the main religion could be very helpful for this research.
 
 
 \newpage
 
-# appendix
+# Appendix
 
 
 \newpage
 
 
 # References
-Smith, Tom W., Davern, Michael, Freese, Jeremy, and Morgan, Stephen L., General Social Surveys, 1972-2018 [machine-readable data file] /Principal Investigator, Smith, Tom W.; Co-Principal Investigators, Michael Davern, Jeremy Freese and Stephen L. Morgan; Sponsored by National Science Foundation. --NORC ed.-- Chicago: NORC, 2019.
-
-U.S. Census Bureau (2021). Population estimates. Retrieved from https://www.census.gov/quickfacts/fact/table/US/PST045221.
