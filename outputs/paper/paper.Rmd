@@ -18,6 +18,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library(tidyverse)
 library(dplyr)
 library(knitr)
+library(modelsummary)
 ```
 
 # Introduction
@@ -238,7 +239,16 @@ reduced_data %>%
 \newpage
 
 # Results
-To study more on gender and the opinions on importance of being born as certain gender, linear model was created to study this matter. 
+To study more on the social issues and the influence of religion, we are going to create some linear models. As opinions of different religions are similar in many of the survey question studied, only the questions that resulted in some disagreement will be chosen to create the models. Those data are abortion, same sex marriage, and opinion on religion influence. As for the predictors, age, gender, race, religion are used to fit the model.
+
+```{r}
+reduced_data <- reduced_data %>%
+  drop_na(abortion) %>%
+  drop_na(homo_marriage) %>%
+  drop_na(religinf)
+
+abortion_model <- glm(abortion ~ age_group + gender + race + relig, data = reduced_data, family = "binomial")
+```
 
 As for the opinions on abortion, we can see an interesting result where only Christians and Catholics show significant amount of negativity towards abortion compared to other religions. 
 
