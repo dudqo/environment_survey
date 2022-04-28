@@ -1,10 +1,10 @@
 ---
 title: "Religion and Its Influence on Social Issues^[Code and data are available at: https://github.com/dudqo/religion_survey]"
-subtitle: "Possible factors effecting 2016 election"
+subtitle: "Agreement and Disagreement between Religion on Popular Issues in Modern Society in the U.S"
 author: 
   - Young Suk
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "This paper has been examined possible variables that influenced U.S citizens' choice for the 2016 U.S presidential election. We have found that there exists significantly different opinions regarding gender, wealth, race and age. This is important in a sesne that it shows thought trends as well as crucial decision indicators for voting in U.S.,With further survey at the end of this paper, we are going to explore whether this is happening only in U.S or not."
+abstract: "This paper has been examined possible influence of religion in the modern society on the popular social issues that U.S is experiencing. Using the U.S GSS survey data, the paper found not many significant disagreement in the popular social issues, however on the topics where disagreeemnt happen, and also on other aspects of the data, there are many important and interesting points that could be observed and is worth noting for further research."
 output:
   bookdown::pdf_document2:
     fig_caption: yes
@@ -22,14 +22,15 @@ library(modelsummary)
 ```
 
 # Introduction
-Religion has been major part of human history around the world, and for many countries, religion is something they heavily rely on even in modern days.For example, European countries such as Spain and Italy which heavily relies on catholic, and there are many middle eastern countries that heavily rely on Islam and Hinduism. While it is reported that the number of religious people is declining quickly, religion still has big social influence in many aspects of the society in the United States, and this paper aims to research the social influence of popular religions in the United States and how the opinions of different religions differ in the context of social issues and government policies regarding them.
+Religion has been major part of human history around the world, and for many countries, religion is something they heavily rely on even in modern days. For example, European countries such as Spain and Italy which heavily relies on catholic, and there are many middle eastern countries that heavily rely on Islam and Hinduism. While it is reported that the number of religious people is declining quickly, religion still has big social influence in many aspects of the society in the United States, and this paper aims to research the social influence of popular religions in the United States and how the opinions of different religions differ in the context of social issues and government policies regarding them.
 
 This research will focus on some social issues in the United States and how opinions of people of different religion differs. As the original dataset had very large amount data related to the topic of this research, decisions had to me made on which data to use. For the paper to be more effective on studying the influence of religion on social issues, data on popular social problems in modern society, especially in the United States have been chosen.
 
-The dataset was obtained from U.S GSS survey, by only selecting the survey questions that are related to the topic of this research. The data used includes personal profile data of survey respondents such as age, gender, religion, race, income and data on questions regarding their opinion on popular social issues in the United States such as abortion, gay marriage and government policies regarding welfare, racism, and etc. This research found that despite the people's different views on different religion and the differences in the religions themselves, when it comes to the popular social issues, their opinions are mostly inline with each other. Some different views do exists and which will be discussed in the later part of the paper. 
+The dataset was obtained from U.S GSS survey, by only selecting the survey questions that are related to the topic of this research. The data used includes personal profile data of survey respondents such as age, gender, religion, race, income and data on questions regarding their opinion on popular social issues in the United States such as abortion, gay marriage and government policies regarding welfare, racism, etc. This research found that despite the people's different views on different religion and the differences in the religions themselves, when it comes to the popular social issues, their opinions are mostly inline with each other. Some different views do exist, and which will be discussed in the later part of the paper.
+ 
 
 
-This report was created using `R` [@citeR] and its libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], were used to process and clean the data, and `ggplot` [@ggplot] `bookdown` [@bookdown] and `knitr` [@knitr] was used to format this report.
+This report was created using `R` [@citeR] and its libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], were used to process and clean the data, and `ggplot` [@ggplot], `bookdown` [@bookdown], `modelsummary` [@modelsummary] and `knitr` [@knitr] was used to format this report.
 
 # Data
 ```{r, include=FALSE, echo=FALSE}
@@ -42,15 +43,24 @@ reduced_data$Family_income <- factor(reduced_data$Family_income,
 reduced_data$Immigration <- factor(reduced_data$Immigration, levels = c("Strongly disagree","Disagree", "Neither","Agree","Strongly agree"))
 ```
 
-The Original data is from survey by US GSS, which contains data of public opinions of USA citizens on various subjects. The data is from 2021 survey which was conducted online due to global pandemic by COVID19. For the purpose of this research, the data related to personal profiles, survey respondents' opinion on government policies and religion has been extracted from the raw survey data.
+The Original data is from survey by US GSS, which contains data of public opinions of USA citizens on various subjects. The data is from 2021 survey which was conducted online due to global pandemic by COVID19. For the purpose of this research, the data related to personal profiles, survey respondents' opinion on government policies, opinions on social issues and data on religion has been extracted from the raw survey data.
 
-The religion data has very detailed options that includes religions have very low For the simplicity of this research, protestants and Christians were grouped together under Christians and all the non-popular religion has been grouped under "other".
+The religion data has very detailed options that includes religions with very low population. For the simplicity of this research, protestants and Christians were grouped together under Christians and all the non-popular religion has been grouped under "other".
 
 Looking at the figures, some expected trends from the data can be observed:
 
 * As age gets younger, the percentage of people who does not have any religion increases. With steady increase in nonreligious as age group gets younger, people in the age group of 80-89 have very few people who are not religious. If we look at 20-29 years old, we can see that about half of them does not have any religion.
 * There are far more white population who participated in the survey than any other race. This is as expected since white population in the United States far outnumbers any other race.
 * Christian is most popular religion in the United States.
+
+Figure 1 to 6 focuses on the data of the survey respondents, such as age, race, gender, religion and income. Important points of possible limitations of this dataset to note from the figures are:
+
+* Number of survey participants of in the age group of 20-40 are very low compared to other age groups.
+* There are more female survey participants than male, however, there does not seem to be any significant impact on the result because of this.
+* As expected for a population of the United States, there are significantly more white population than any other population.
+* Also as expected, the most popular religion is Christian and Catholic, and no religion.
+
+Figure 7 to 13 are on survey respondents' opinion on many different popular social issues in modern society. While there is not a possible limitation shown from these plots it is worth noting that there does not seem to be big difference between the religions when it comes their opinions on social issues.
 
 
 
@@ -89,7 +99,7 @@ reduced_data %>%
   coord_flip() +
   facet_wrap(~opsex)
 ```
-```{r fig4, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig4, echo=FALSE, fig.cap = "Distribution of survey respondents' birth place"}
 reduced_data %>%
   ggplot(aes(x = relig, fill = born)) +
   geom_bar() +
@@ -113,31 +123,20 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig6, echo=FALSE, fig.cap = "Distribution of religion of survey respondents by family income"}
-reduced_data %>%
-  ggplot(aes(x = relig, fill = relig)) +
-  geom_bar() +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Survey Respondents' Family Income by Religion",
-       ) +
-  coord_flip() +
-  theme(legend.title = element_blank())
-```
 
-```{r fig7, echo=FALSE, fig.cap = "Survey respondents' opinion on governmemt policy on improving coditions of black population"}
+```{r fig6, echo=FALSE, fig.cap = "Opinion on governmemt policy on improving coditions of black population"}
 reduced_data %>%
   drop_na(nation_race) %>%
   ggplot(aes(x = relig, fill = nation_race)) +
   geom_bar() +
   labs(x = element_blank(),
        y = element_blank(),
-       title = "Is the Government spending enough on improving coditions of Black People?",
+       title = "Opinion on goverment spending to improve coditions of Black People",
        ) +
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig8, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig7, echo=FALSE, fig.cap = "Opinion on whether the government is spedning on welfare"}
 reduced_data %>%
   drop_na(nation_welfare) %>%
   ggplot(aes(x = relig, fill = nation_welfare)) +
@@ -150,7 +149,7 @@ reduced_data %>%
   theme(legend.title = element_blank())
 ```
 
-```{r fig9, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig8, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough to assist the poor"}
 reduced_data %>%
   drop_na(Assistance_to_the_poor) %>%
   ggplot(aes(x = relig, fill = Assistance_to_the_poor)) +
@@ -162,7 +161,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig10, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig9, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough on social security"}
 reduced_data %>%
   drop_na(social_security) %>%
   ggplot(aes(x = relig, fill = social_security)) +
@@ -174,7 +173,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig11, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig10, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough to halt increasing crime rate"}
 reduced_data %>%
   drop_na(natcrime) %>%
   ggplot(aes(x = relig, fill = natcrime)) +
@@ -186,20 +185,8 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig12, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
-reduced_data %>%
-  drop_na(Immigration) %>%
-  ggplot(aes(x = relig, fill = Immigration)) +
-  geom_bar() +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Should the Government Limit Immigration to Protect U.S Culture?",
-       ) +
-  coord_flip() +
-  theme(legend.title = element_blank())
-```
 
-```{r fig13, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig11, echo=FALSE, fig.cap = "Opinion on whether religion should have less influence"}
 reduced_data %>%
   drop_na(religinf) %>%
   ggplot(aes(x = relig, fill = religinf)) +
@@ -211,7 +198,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig14, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig12, echo=FALSE, fig.cap = "Opinion on whether they support same sex marriage"}
 reduced_data %>%
   drop_na(homo_marriage) %>%
   ggplot(aes(x = relig, fill = homo_marriage)) +
@@ -223,7 +210,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
-```{r fig15, echo=FALSE, fig.cap = "Distribution of religion of survey respondents"}
+```{r fig13, echo=FALSE, fig.cap = "Opinion on whether they support abortion"}
 reduced_data %>%
   drop_na(abortion) %>%
   ggplot(aes(x = relig, fill = abortion)) +
@@ -239,37 +226,51 @@ reduced_data %>%
 \newpage
 
 # Results
-To study more on the social issues and the influence of religion, we are going to create some linear models. As opinions of different religions are similar in many of the survey question studied, only the questions that resulted in some disagreement will be chosen to create the models. Those data are abortion, same sex marriage, and opinion on religion influence. As for the predictors, age, gender, race, religion are used to fit the model.
+Looking into the personal information of the survey participants by their religion, Figure \@ref(fig:fig1) shows that distribution of age group by religion. It shows that number of the religious people have been declining, which suggests that the religion is becoming less relevant in the modern society. Figure \@ref(fig:fig2) shows the gender distribution by religion, as well as their opinion on the importance of being born as a specific gender. Gender data in general did not provide any useful information regarding the distribution of religion and the opinion on the importance of gender, but it can be observed that there are more female survey participants than male survey participants, but the number of non-religious people of each gender is about the same. Figure \@ref(fig:fig4) shows that most of the survey participants are born in the U.S and figure \@ref(fig:fig5) that income does not seem to play a role on which religion people are into.
+from figure 6 to 13, it focuses on the social issues and while there are many of them that the different religions share the same opinion on, there are some disagreements. 
 
-```{r}
-reduced_data <- reduced_data %>%
+* On the survey regarding welfare, popular answer for Christians and Catholics were that the government is spending too much, when other religions lean more towards the government is spending too little.
+* More than half of Christians, Catholics, Muslim/Islam disagree on abortion, when all other religions are very open to abortion.
+
+In general, the opinions between people of different religions does not seem to be that different, and unexpected results show that disagreements usually came from Christians and Catholics. However, number of survey participants from other religions were quite low and could lead to a biased result.
+
+To study more on the social issues and the influence of religion, logistics regression was used. The logistic regression focused on the variable with the most disagreement, which was abortion, and age, gender, race, and religion was used as predictor variables.
+
+```{r, echo=FALSE}
+abortion_mod_data <- reduced_data %>%
+  select(age_group, gender, abortion, race, relig) %>%
   drop_na(abortion) %>%
-  drop_na(homo_marriage) %>%
-  drop_na(religinf)
+  mutate(across(c(age_group, gender, abortion, race, relig), as_factor))
 
-abortion_model <- glm(abortion ~ age_group + gender + race + relig, data = reduced_data, family = "binomial")
+abortion_model <- glm(abortion ~ age_group + gender + race + relig, data = abortion_mod_data, family = "binomial")
 ```
 
-As for the opinions on abortion, we can see an interesting result where only Christians and Catholics show significant amount of negativity towards abortion compared to other religions. 
+The regression result in the Appendix shows that there is significant difference between religions coefficient estimate, which means that the there is a noticeable amount of disagreement between religions when it comes to abortion. However, while there are some noticeable disagreements between age groups, race and gender does not seem to have any effect on the opinions on abortion.
 
 # Discussion
 
 ## Summary
-In american society, general public's opinions on different religion varies significantly. While religions such as Christianity and Catholicism has been around since the beginning of history of the United States as a country, there are some religions such as Islam and Buddhism that Americans still are not very familiar with. With the unfamiliarity and some negative news involving a religion, the views on a specific religion be heavily influenced by stereotypes. We can observe from the u.S GSS survey that the opinions between people of different religion are not that different. 
+In American society, general public's opinions on different religion varies significantly. While religions such as Christianity and Catholicism has been around since the beginning of history of the United States as a country, there are some religions such as Islam and Buddhism that Americans still are not very familiar with. With the unfamiliarity and some negative news involving a religion, the views on a specific religion be heavily influenced by stereotypes. We can observe from the U.S GSS survey that the opinions between people of different religion are not that different. 
 
 
-## Different Opinions between different religions.
- 
+## Disagreement from Christians and Catholics.
+There were some social issues that had some disagreement between religions and surprisingly, they all involved Christians and Catholics. While this could be due to one of the limitations of the dataset being low number of survey participants from different religions, it is quite interesting to see that the social issues popular especially in the United States had major disagreement only from the most dominant religions in the same country.
 
+## Possible decreasing influence of religion.
+Throughout the paper, there were two interesting points that can be observed from the data. There was noticeable disagreement between age groups regarding abortion, and the number of religious people appears to be decreasing. This could be an indication that the influence of religions is decreasing as number of religious people decrease.
 
 ## Weaknesses and how we should proceed in the future
-As the survey was conducted in the United States, the data lacks diversity of religions and most of survey respondents' are Christians or Catholics. For more accurate and in depth research, more data from people of other religions are required. Also, the opinions regarding social issues could be influenced by the location they live. So data from different countries where Christianity or Catholicism is not the main religion could be very helpful for this research.
+As the survey was conducted in the United States, the data lacks diversity of religions and most of survey respondents are Christians or Catholics. For more accurate and in-depth research, more data from people of other religions are required. Also, the opinions regarding social issues could be influenced by the location they live. So, data from different countries where Christianity or Catholicism is not the main religion could be very helpful for this research.
+
 
 
 \newpage
 
 # Appendix
-
+```{r, echo=FALSE}
+abortion_model |>
+  modelsummary(fmt = 2, exponentiate = TRUE)
+```
 
 \newpage
 
