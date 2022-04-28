@@ -76,7 +76,7 @@ reduced_data %>%
   theme(legend.title = element_blank())
 ```
 
-```{r fig2, fig.cap= "Distribution of survey respondents' race.", echo = FALSE}
+```{r fig2, fig.cap= "Distribution of survey respondents race.", echo = FALSE}
 reduced_data %>%
   ggplot(aes(x = race, fill = relig)) +
   geom_bar() +
@@ -87,7 +87,8 @@ reduced_data %>%
   theme(legend.position = "none")
 ```
 
-```{r fig3, echo = FALSE, fig.cap= "Distribution of survey respondents' gender"}
+
+```{r fig3, fig.cap= "Distribution of survey respondents gender.", echo = FALSE}
 reduced_data %>%
   ggplot(aes(x = gender, fill = relig)) +
   geom_bar() +
@@ -99,7 +100,8 @@ reduced_data %>%
   coord_flip() +
   facet_wrap(~opsex)
 ```
-```{r fig4, echo=FALSE, fig.cap = "Distribution of survey respondents' birth place"}
+
+```{r fig4, echo=FALSE, fig.cap = "Distribution of survey respondents birth place"}
 reduced_data %>%
   ggplot(aes(x = relig, fill = born)) +
   geom_bar() +
@@ -124,6 +126,7 @@ reduced_data %>%
   theme(legend.title = element_blank())
 ```
 
+
 ```{r fig6, echo=FALSE, fig.cap = "Opinion on governmemt policy on improving coditions of black population"}
 reduced_data %>%
   drop_na(nation_race) %>%
@@ -136,6 +139,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+
 ```{r fig7, echo=FALSE, fig.cap = "Opinion on whether the government is spedning on welfare"}
 reduced_data %>%
   drop_na(nation_welfare) %>%
@@ -149,6 +153,7 @@ reduced_data %>%
   theme(legend.title = element_blank())
 ```
 
+
 ```{r fig8, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough to assist the poor"}
 reduced_data %>%
   drop_na(Assistance_to_the_poor) %>%
@@ -161,6 +166,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+
 ```{r fig9, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough on social security"}
 reduced_data %>%
   drop_na(social_security) %>%
@@ -173,6 +179,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+
 ```{r fig10, echo=FALSE, fig.cap = "Opinion on whether the government is spending enough to halt increasing crime rate"}
 reduced_data %>%
   drop_na(natcrime) %>%
@@ -198,6 +205,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+
 ```{r fig12, echo=FALSE, fig.cap = "Opinion on whether they support same sex marriage"}
 reduced_data %>%
   drop_na(homo_marriage) %>%
@@ -210,6 +218,7 @@ reduced_data %>%
   coord_flip() +
   theme(legend.title = element_blank())
 ```
+
 ```{r fig13, echo=FALSE, fig.cap = "Opinion on whether they support abortion"}
 reduced_data %>%
   drop_na(abortion) %>%
